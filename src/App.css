@@ -6,18 +6,32 @@ body {
 }
 
 .app-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+}
+p {
+    margin: 0px;
+    margin-bottom: 15px;
+    margin-top: 0px;
+    padding: 0px
+}
+
+.all-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1 {
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 2rem;
-  text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin: 0;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .button-container {
