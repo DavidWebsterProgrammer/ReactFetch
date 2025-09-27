@@ -70,8 +70,7 @@ const AppContent: React.FC = () => {
     
       <div className="app-container">
         <h1>API Fetching, using Tanstack Query</h1>
-        <p>This React application queries three different APIs - one to get a dog image, one to get a joke, and one to get a sample user.</p>
-        <p>Each are retrieved, parsed, and displayed in their own area.</p>
+        <p>This React application fetches and displays data from three distinct APIs: a dog image, a joke, and a sample user. Each item is retrieved, parsed, and rendered in its own dedicated section.</p>
         
         {/* Buttons Section */}
         <div className="button-container">
