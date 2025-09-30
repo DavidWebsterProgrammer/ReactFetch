@@ -1,7 +1,11 @@
-import React from 'react';
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
-import './App.css';
-
+import React from "react";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+import "./App.css";
+import { useRef } from "react";
 const queryClient = new QueryClient();
 
 // Define a type for the data returned from the Dog API
@@ -44,43 +48,84 @@ const App: React.FC = () => {
 
 const AppContent: React.FC = () => {
   // Dog Query with type definition
-  const { data: dogData, refetch: refetchDog, isLoading: loadingDog } = useQuery<DogData>({
-    queryKey: ['dog'],
-    queryFn: async () => (await fetch('https://dog.ceo/api/breeds/image/random')).json(),
+  const {
+    data: dogData,
+    refetch: refetchDog,
+    isLoading: loadingDog,
+  } = useQuery<DogData>({
+    queryKey: ["dog"],
+    queryFn: async () =>
+      (await fetch("https://dog.ceo/api/breeds/image/random")).json(),
     enabled: false,
   });
 
   // Joke Query with type definition
-  const { data: jokeData, refetch: refetchJoke, isLoading: loadingJoke } = useQuery<JokeData>({
-    queryKey: ['joke'],
-    queryFn: async () => (await fetch('https://official-joke-api.appspot.com/random_joke')).json(),
+  const {
+    data: jokeData,
+    refetch: refetchJoke,
+    isLoading: loadingJoke,
+  } = useQuery<JokeData>({
+    queryKey: ["joke"],
+    queryFn: async () =>
+      (await fetch("https://official-joke-api.appspot.com/random_joke")).json(),
     enabled: false,
   });
 
   // User Query with type definition
-  const { data: userData, refetch: refetchUser, isLoading: loadingUser } = useQuery<UserData>({
-    queryKey: ['user'],
-    queryFn: async () => (await fetch('https://randomuser.me/api/')).json(),
+  const {
+    data: userData,
+    refetch: refetchUser,
+    isLoading: loadingUser,
+  } = useQuery<UserData>({
+    queryKey: ["user"],
+    queryFn: async () => (await fetch("https://randomuser.me/api/")).json(),
     enabled: false,
   });
 
+  const dogRef = useRef<HTMLDivElement>(null);
+  const jokeRef = useRef<HTMLDivElement>(null);
+  const personRef = useRef<HTMLDivElement>(null);
+
+  function getDog() {
+    refetchDog();
+    if (dogRef.current) {
+      dogRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }
+
+  function getJoke() {
+    refetchJoke();
+    if (jokeRef.current) {
+      jokeRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }
+
+  function getPerson() {
+    refetchUser();
+    if (personRef.current) {
+      personRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }
 
   return (
     <div className="all-content">
-    
       <div className="app-container">
         <h1>API Fetching, using Tanstack Query</h1>
-        <p>This React application fetches and displays data from three distinct APIs: a dog image, a joke, and a sample user. Each item is retrieved, parsed, and rendered in its own dedicated section.</p>
-        
+        <p>
+          This React application fetches and displays data from three distinct
+          APIs: a dog image, a joke, and a sample user. Each item is retrieved,
+          parsed, and rendered in its own dedicated section.
+        </p>
+
         {/* Buttons Section */}
         <div className="button-container">
-          <button className="dog-button" onClick={() => refetchDog()}>
+          <button className="dog-button" onClick={() => getDog()}>
             Get Dog
           </button>
-          <button className="joke-button" onClick={() => refetchJoke()}>
+          <button className="joke-button" onClick={() => getJoke()}>
             Get Joke
           </button>
-          <button className="user-button" onClick={() => refetchUser()}>
+          <button className="user-button" onClick={() => getPerson()}>
             Get User
           </button>
         </div>
@@ -88,7 +133,7 @@ const AppContent: React.FC = () => {
         {/* Results Section */}
         <div className="results-container">
           {/* Dog Section */}
-          <div className="card">
+          <div className="card" ref={dogRef}>
             <h2>Random Dog Image</h2>
             {loadingDog ? (
               <p className="loading">Loading...</p>
@@ -98,7 +143,7 @@ const AppContent: React.FC = () => {
           </div>
 
           {/* Joke Section */}
-          <div className="card">
+          <div className="card" ref={jokeRef}>
             <h2>Random Joke</h2>
             {loadingJoke ? (
               <p className="loading">Loading...</p>
@@ -113,7 +158,7 @@ const AppContent: React.FC = () => {
           </div>
 
           {/* User Section */}
-          <div className="card user-card">
+          <div className="card user-card" ref={personRef}>
             <h2>Random User</h2>
             {loadingUser ? (
               <p className="loading">Loading...</p>
@@ -125,11 +170,13 @@ const AppContent: React.FC = () => {
                     alt="Random User"
                   />
                   <p>
-                    {userData.results[0].name.first} {userData.results[0].name.last}
+                    {userData.results[0].name.first}{" "}
+                    {userData.results[0].name.last}
                   </p>
                   <p>{userData.results[0].email}</p>
                   <p>
-                    {userData.results[0].location.city}, {userData.results[0].location.country}
+                    {userData.results[0].location.city},{" "}
+                    {userData.results[0].location.country}
                   </p>
                 </div>
               )
